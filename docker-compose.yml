@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres
+    environment:
+      POSTGRES_USER: alibou
+      POSTGRES_PASSWORD: alibou
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=alibou
+      - MONGO_INITDB_ROOT_PASSWORD=alibou
+    networks:
+      - microservices-net
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=alibou
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=alibou
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - microservices-net
+    depends_on:
+      - mongodb
+
+  mail-dev:
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  mongo:
+
