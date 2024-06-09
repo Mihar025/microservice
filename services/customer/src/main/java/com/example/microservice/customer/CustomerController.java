@@ -1,10 +1,9 @@
 package com.example.microservice.customer;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.GET;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +35,25 @@ public class CustomerController {
         return ResponseEntity.ok(service.findAllCustomers());
     }
 
+    @GetMapping("/exist/{customer-id}")
+    public ResponseEntity<Boolean> existById(@PathVariable("customer-id")  String customerId
+    ){
+        return ResponseEntity.ok(service.existById(customerId));
+
+    }
+
+    @GetMapping("/{customer-id}")
+    public ResponseEntity<CustomerResponse> findById(@PathVariable("customer-id")  String customerId
+    ){
+        return ResponseEntity.ok(service.findById(customerId));
+
+    }
+
+    @DeleteMapping("/{customer-id}")
+    public ResponseEntity<Void> delete(@PathVariable("customer-id") String customerID){
+        service.deleteCustoemr(customerID);
+        return ResponseEntity.accepted().build();
+    }
 
 
 }

@@ -3,9 +3,12 @@ package com.example.microservice.customer;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 
 @Service
@@ -23,7 +26,7 @@ public class CustomerService {
     public void updateCustomer(CustomerRequest customerRequest) {
         var customer = repository.findById(customerRequest.id()).orElseThrow(
                 () -> new CustomerNotoundException(
-                        String.format("Cannot update Customer:: No Customer found with the provided ID:: %s", customerRequest.id())
+                        format("Cannot update Customer:: No Customer found with the provided ID:: %s", customerRequest.id())
                 )
         );
         mergeCustomer(customer, customerRequest);
@@ -51,5 +54,24 @@ public class CustomerService {
                 .map(mapper::fromCustomer)
                 .collect(Collectors.toList())
                 ;
+    }
+
+    public Boolean existById(String customerId) {
+        return repository.findById(customerId).isPresent();
+    }
+
+    public CustomerResponse findById(String customerId) {
+        return repository.findById(customerId)
+                .map(mapper::fromCustomer)
+                .orElseThrow( () -> new CustomerNotoundException(format(
+                        "No customer provided with ID:: %s", customerId
+                )));
+
+
+
+    }
+
+    public void deleteCustoemr(String customerID) {
+        repository.deleteById(customerID);
     }
 }
