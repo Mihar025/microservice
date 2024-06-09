@@ -4,12 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository repository;
     private final CustomerMapper mapper;
+
 
     public String createCustomer(CustomerRequest customerRequest) {
         var customer = repository.save(mapper.toCustomer(customerRequest));
@@ -39,5 +43,13 @@ public class CustomerService {
         if(customerRequest.address() != null){
             customer.setAddress(customerRequest.address());
         }
+    }
+
+    public List<CustomerResponse> findAllCustomers(){
+        return repository.findAll()
+                .stream()
+                .map(mapper::fromCustomer)
+                .collect(Collectors.toList())
+                ;
     }
 }
