@@ -1,5 +1,8 @@
-package com.example.microservice.customer;
+package com.example.microservice.CustomerController;
 
+import com.example.microservice.Models.CustomerRequest;
+import com.example.microservice.Models.CustomerResponse;
+import com.example.microservice.CustomerService.CustomerService;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;

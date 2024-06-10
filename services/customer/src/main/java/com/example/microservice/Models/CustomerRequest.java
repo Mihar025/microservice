@@ -1,8 +1,8 @@
-package com.example.microservice.customer;
+package com.example.microservice.Models;
 
+import com.example.microservice.Models.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.Id;
 
 public record CustomerRequest (
 

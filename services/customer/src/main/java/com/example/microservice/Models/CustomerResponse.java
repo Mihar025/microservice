@@ -1,4 +1,6 @@
-package com.example.microservice.customer;
+package com.example.microservice.Models;
+
+import com.example.microservice.Models.Address;
 
 public record CustomerResponse(
         String id,

@@ -1,6 +1,9 @@
-package com.example.microservice.customer;
+package com.example.microservice.CustomerService;
 
 
+import com.example.microservice.Models.Customer;
+import com.example.microservice.Models.CustomerRequest;
+import com.example.microservice.Models.CustomerResponse;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.example.microservice.customer;
+package com.example.microservice.Models;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;

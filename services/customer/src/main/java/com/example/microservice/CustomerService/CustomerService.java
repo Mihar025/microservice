@@ -1,9 +1,13 @@
-package com.example.microservice.customer;
+package com.example.microservice.CustomerService;
 
+import com.example.microservice.Models.Customer;
+import com.example.microservice.Models.CustomerRequest;
+import com.example.microservice.Models.CustomerResponse;
+import com.example.microservice.CustomerRepository.*;
+import com.example.microservice.exceptions.CustomerNotoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
