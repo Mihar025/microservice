@@ -1,6 +1,7 @@
 package com.misha.order.OrderService;
 
 import com.misha.order.Controller.PurchaseRequest;
+import com.misha.order.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,12 @@ public class ProductClient {
                 requestEntity,
                 responseType
         );
+
+        if(responseEntity.getStatusCode().isError()){
+            throw new BusinessException("An error occurred while processing the product purchase" + responseEntity.getStatusCode());
+        }
+
+
         return responseEntity.getBody();
     }
 
