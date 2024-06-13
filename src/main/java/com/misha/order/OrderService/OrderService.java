@@ -38,13 +38,6 @@ public class OrderService {
 
 
 
-        //persist order lines
-
-        // start payment process
-
-        // send the order confirmation to our --> notification-ms(kafka)
-
-
     return null;
     }
 }
