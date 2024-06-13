@@ -1,6 +1,5 @@
 package com.misha.order.handler;
 
-import com.misha.microcervice.ProductService.ProductPurchaseException;
 import com.misha.order.exceptions.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
