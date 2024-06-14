@@ -7,13 +7,9 @@ public record PaymentConfirmation(
         String orderReference,
         BigDecimal amount,
         PaymentMethod paymentMethod,
-
-        String id,
-
-        String customerFirstname,
-        String customerLastname,
-
-        String  customerEmail
+        String customerFirstName,
+        String customerLastName,
+        String customerEmail
 
 
 
