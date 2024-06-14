@@ -44,13 +44,6 @@ public class NotificationConsumer {
         );
 
 
-
-
-
-
-
-
-
     }
 
     @KafkaListener(topics = "order-topic")
