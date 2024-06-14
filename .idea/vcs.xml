@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/services/discovery" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/services/notification" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/services/order" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/services/payment" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/services/product" vcs="Git" />
