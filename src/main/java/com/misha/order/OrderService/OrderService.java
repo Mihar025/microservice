@@ -3,6 +3,8 @@ package com.misha.order.OrderService;
 import com.misha.order.Controller.OrderRequest;
 import com.misha.order.Controller.OrderResponse;
 import com.misha.order.Controller.PurchaseRequest;
+import com.misha.order.payment.PaymentClient;
+import com.misha.order.payment.PaymentRequest;
 import com.misha.order.producer.OrderConfirmation;
 import com.misha.order.producer.OrderProducer;
 import com.misha.order.customer.CustomerClient;
@@ -10,6 +12,7 @@ import com.misha.order.exceptions.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,35 +26,48 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
+    @Transactional
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerById(request.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: No Customer exist with the provided Id"));
 
-    var purchase = this.productClient.purchaseProducts(request.products());
+        var purchase = this.productClient.purchaseProducts(request.products());
 
-    var order = this.orderRepository.save(orderMapper.toOrder(request));
+        var order = this.orderRepository.save(orderMapper.toOrder(request));
 
-    for(PurchaseRequest purchaseRequest : request.products()){
-        orderLineService.saveOrderLine(
-                new OrderLineRequest(
-                        null,
-                        order.getId(),
-                        purchaseRequest.product_id(),
-                        purchaseRequest.quantity()
+        for (PurchaseRequest purchaseRequest : request.products()) {
+            orderLineService.saveOrderLine(
+                    new OrderLineRequest(
+                            null,
+                            order.getId(),
+                            purchaseRequest.product_id(),
+                            purchaseRequest.quantity()
+                    )
+            );
+        }
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
+
+        orderProducer.sendOrderConfirmation(
+                new OrderConfirmation(
+                        request.reference(),
+                        request.amount(),
+                        request.paymentMethod(),
+                        customer,
+                        purchase
                 )
         );
-    }
 
-    orderProducer.sendOrderConfirmation(
-            new OrderConfirmation(
-                    request.reference(),
-                    request.amount(),
-                    request.paymentMethod(),
-                    customer,
-                    purchase
-            )
-    );
+
+
     return order.getId();
     }
 
