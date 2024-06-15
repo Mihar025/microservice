@@ -8,16 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record Customer(
-
         String id,
-
         String firstname,
-
         String lastname,
-        String email,
-
-        List<Product> products
-
-
+        String email
 ) {
+
 }
