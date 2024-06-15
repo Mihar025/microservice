@@ -1,7 +1,10 @@
+server:
+  port: 8070
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/product
+    url: jdbc:postgresql://localhost:5433/order
     username: misha
     password: misha
   jpa:
@@ -9,15 +12,13 @@ spring:
       ddl-auto: create
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.support.serializer.JsonSerializer
-      properties:
+    kafka:
+  producer:
+    bootstrap-servers: localhost:9092
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
         spring.json.type.mapping: orderConfirmation:com.misha.order.producer.OrderConfirmation
-server:
-  port: 8070
 
 application:
   config:
