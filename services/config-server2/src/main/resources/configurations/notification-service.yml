@@ -6,7 +6,7 @@ spring:
       username: misha
       password: misha
       host: localhost
-      port: 27017
+      port: 27018
       database: notification
       authentication-database: admin
   kafka:
@@ -18,12 +18,13 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: orderConfirmation:com.alibou.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.alibou.ecommerce.kafka.payment.PaymentConfirmation
+        spring.json.type.mapping: orderConfirmation:com.example.microservice.kafka.order.OrderConfirmation,paymentConfirmation:com.example.microservice.kafka.payment.PaymentConfirmation
+
   mail:
     host: localhost
     port: 1025
-    username: alibou
-    password: alibou
+    username: misha
+    password: misha
     properties:
       mail:
         smtp:
