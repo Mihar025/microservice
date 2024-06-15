@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface PaymentClient {
 
-
     @PostMapping
     Integer requestOrderPayment(@RequestBody PaymentRequest request);
-
-
 }

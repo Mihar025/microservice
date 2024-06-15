@@ -20,29 +20,30 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-    private final OrderRepository orderRepository;
+
+    private final OrderRepository repository;
+    private final OrderMapper mapper;
     private final CustomerClient customerClient;
+    private final PaymentClient paymentClient;
     private final ProductClient productClient;
-    private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
-    private final PaymentClient paymentClient;
 
     @Transactional
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerById(request.customerId())
-                .orElseThrow(() -> new BusinessException("Cannot create order:: No Customer exist with the provided Id"));
+                .orElseThrow(() -> new BusinessException("Cannot create order:: No customer exists with the provided ID"));
 
-        var purchase = this.productClient.purchaseProducts(request.products());
+        var purchasedProducts = productClient.purchaseProducts(request.products());
 
-        var order = this.orderRepository.save(orderMapper.toOrder(request));
+        var order = this.repository.save(mapper.toOrder(request));
 
         for (PurchaseRequest purchaseRequest : request.products()) {
             orderLineService.saveOrderLine(
                     new OrderLineRequest(
                             null,
                             order.getId(),
-                            purchaseRequest.product_id(),
+                            purchaseRequest.productId(),
                             purchaseRequest.quantity()
                     )
             );
@@ -62,26 +63,23 @@ public class OrderService {
                         request.amount(),
                         request.paymentMethod(),
                         customer,
-                        purchase
+                        purchasedProducts
                 )
         );
 
-
-
-    return order.getId();
+        return order.getId();
     }
 
-    public List<OrderResponse> findAll() {
-        return orderRepository.findAll()
+    public List<OrderResponse> findAllOrders() {
+        return this.repository.findAll()
                 .stream()
-                .map(orderMapper:: fromOrder)
+                .map(this.mapper::fromOrder)
                 .collect(Collectors.toList());
     }
 
-    public OrderResponse findById(Integer orderId) {
-        return orderRepository.findById(orderId)
-                .map(orderMapper::fromOrder)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("No order found with the provided ID: %d", orderId)));
-
+    public OrderResponse findById(Integer id) {
+        return this.repository.findById(id)
+                .map(this.mapper::fromOrder)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("No order found with the provided ID: %d", id)));
     }
 }

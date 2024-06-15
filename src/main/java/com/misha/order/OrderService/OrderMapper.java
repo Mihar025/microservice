@@ -5,18 +5,20 @@ import com.misha.order.Controller.OrderResponse;
 import com.misha.order.Models.Order;
 import org.springframework.stereotype.Service;
 
-@Service
 
+@Service
 public class OrderMapper {
 
 
     public Order toOrder(OrderRequest request) {
+        if (request == null) {
+            return null;
+        }
         return Order.builder()
                 .id(request.id())
-                .customerId(request.customerId())
                 .reference(request.reference())
-                .totalAMount(request.amount())
                 .paymentMethod(request.paymentMethod())
+                .customerId(request.customerId())
                 .build();
     }
 
@@ -24,7 +26,7 @@ public class OrderMapper {
         return new OrderResponse(
                 order.getId(),
                 order.getReference(),
-                order.getTotalAMount(),
+                order.getTotalAmount(),
                 order.getPaymentMethod(),
                 order.getCustomerId()
         );

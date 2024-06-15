@@ -3,9 +3,12 @@ package com.misha.order.exceptions;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class BusinessException extends RuntimeException  {
-    private final String msg;
+public class BusinessException extends RuntimeException {
 
+    private final String msg;
 }

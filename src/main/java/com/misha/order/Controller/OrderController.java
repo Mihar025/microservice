@@ -13,25 +13,25 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderController {
 
-    private final OrderService orderService;
+    private final OrderService service;
 
     @PostMapping
     public ResponseEntity<Integer> createOrder(
             @RequestBody @Valid OrderRequest request
-    ){
-        return ResponseEntity.ok(orderService.createOrder(request));
+    ) {
+        return ResponseEntity.ok(this.service.createOrder(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> findAl(){
-        return ResponseEntity.ok(orderService.findAll());
+    public ResponseEntity<List<OrderResponse>> findAll() {
+        return ResponseEntity.ok(this.service.findAllOrders());
     }
 
     @GetMapping("/{order-id}")
     public ResponseEntity<OrderResponse> findById(
             @PathVariable("order-id") Integer orderId
-    ){
-        return ResponseEntity.ok(orderService.findById(orderId));
+    ) {
+        return ResponseEntity.ok(this.service.findById(orderId));
     }
 
 }

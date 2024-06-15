@@ -21,10 +21,7 @@ public class OrderLineController {
     @GetMapping("/order/{order-id}")
     public ResponseEntity<List<OrderLineResponse>> findByOrderId(
             @PathVariable("order-id") Integer orderId
-
-        ){
+    ) {
         return ResponseEntity.ok(service.findAllByOrderId(orderId));
     }
-
-
 }
