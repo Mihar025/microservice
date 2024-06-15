@@ -1,11 +1,14 @@
+server:
+  port: 8090
+
 spring:
   data:
     mongodb:
       username: misha
       password: misha
       host: localhost
-      port: 27017
+      port: 27018
       database: customer
       authentication-database: admin
-server:
-  port: 8090
+  config:
+    import: optional:configserver:http://localhost:8888

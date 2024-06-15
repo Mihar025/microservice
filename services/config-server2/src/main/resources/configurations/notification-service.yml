@@ -1,3 +1,5 @@
+server:
+  port: 8040
 spring:
   data:
     mongodb:
@@ -16,12 +18,12 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: orderConfirmation:com.example.microservice.kafka.order.OrderConfirmation,paymentConfirmation:com.example.microservice.kafka.payment.PaymentConfirmation
+        spring.json.type.mapping: orderConfirmation:com.alibou.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.alibou.ecommerce.kafka.payment.PaymentConfirmation
   mail:
     host: localhost
     port: 1025
-    username: misha
-    password: misha
+    username: alibou
+    password: alibou
     properties:
       mail:
         smtp:
@@ -32,6 +34,3 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
-
-server:
-  port: 8040
